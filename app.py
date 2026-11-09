@@ -31,7 +31,10 @@ DB_CONFIG = {
 }
 
 def get_db():
-    return mysql.connector.connect(**DB_CONFIG)
+    config = dict(DB_CONFIG)
+    if config["host"] not in ("localhost", "127.0.0.1"):
+        config["ssl_verify_cert"] = False
+    return mysql.connector.connect(**config)
 
 def q(sql, params=None):
     conn = get_db()
